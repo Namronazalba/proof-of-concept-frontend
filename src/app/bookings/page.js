@@ -35,48 +35,54 @@ export default function BookingsPage() {
   if (error) return <p className="p-6 text-red-500">{error}</p>;
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="p-6 max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">All Bookings</h1>
-        <Link
-        href="/bookings/create"
-        className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
-        >
-        Create Booking
-        </Link>
+      <div className="p-4 sm:p-6 max-w-5xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold">All Bookings</h1>
+
+          <Link
+            href="/bookings/create"
+            className="mt-3 sm:mt-0 bg-green-600 text-white px-4 py-2 rounded-lg 
+                      hover:bg-green-700 transition text-center sm:w-auto w-full"
+          >
+            Create Booking
+          </Link>
+        </div>
 
         {bookings.length === 0 ? (
-          <p>No bookings found.</p>
+          <p className="text-gray-600">No bookings found.</p>
         ) : (
-            // Inside the <ul> mapping bookings
-            <ul className="space-y-6">
+          <ul className="space-y-4 sm:space-y-6">
             {bookings.map((booking) => (
-                <li
+              <li
                 key={booking._id}
-                className="p-4 border rounded shadow hover:shadow-md transition flex justify-between items-center"
-                >
-                <div>
-                    <p><strong>Service:</strong> {booking.service}</p>
-                    <p><strong>Date:</strong> {new Date(booking.date).toLocaleString()}</p>
-                    <p><strong>Status:</strong> {booking.status}</p>
+                className="p-4 bg-white border rounded-xl shadow-sm 
+                          hover:shadow-md transition flex flex-col sm:flex-row 
+                          justify-between gap-4"
+              >
+                <div className="text-sm sm:text-base">
+                  <p><strong>Service:</strong> {booking.service}</p>
+                  <p><strong>Date:</strong> {new Date(booking.date).toLocaleString()}</p>
+                  <p><strong>Status:</strong> {booking.status}</p>
                 </div>
 
-                <div>
-                    <a
+                <div className="flex sm:block">
+                  <a
                     href={`/bookings/${booking._id}`}
-                    className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
-                    >
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg 
+                              hover:bg-blue-700 transition w-full sm:w-auto text-center"
+                  >
                     View
-                    </a>
+                  </a>
                 </div>
-                </li>
+              </li>
             ))}
-            </ul>
-
+          </ul>
         )}
       </div>
     </div>
+
   );
 }
