@@ -2,19 +2,39 @@
 import { useState } from "react";
 import API from "@/utils/api";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const router = useRouter();
   useAuthRedirect();
   const handleRegister = async (e) => {
     e.preventDefault();
     setMessage("");
+
     try {
-      const response = await API.post("/api/auth/register", { phone, email, password });
-      setMessage(response.data.message);
+      const registerRes = await API.post("/api/auth/register", {
+        phone,
+        email,
+        password,
+      });
+
+      setMessage(registerRes.data.message);
+
+      const loginRes = await API.post("/api/auth/login", {
+        email,
+        password,
+      });
+
+      if (loginRes.data.token) {
+        localStorage.setItem("token", loginRes.data.token);
+      }
+
+      router.push("/user");
+
     } catch (err) {
       setMessage(err.response?.data?.message || "Registration failed");
     }
